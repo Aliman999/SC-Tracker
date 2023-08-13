@@ -27,7 +27,7 @@ const database = {
 
       try{
         const insertResult = await database.collection.insertMany(data);
-        console.log(`[DB] INSERT [${data.length}] => `, insertResult);
+        //console.log(`[DB] INSERT [${data.length}] => `, insertResult);
         callback(true);
       }catch(e){
         console.log(`[DB] INSERT ERROR: ${e}`);
@@ -44,7 +44,7 @@ const database = {
 
       try{
         const updateResult = await database.collection.updateOne(query, newData);
-        console.log(`[DB] UPDATE => `, updateResult);
+        //console.log(`[DB] UPDATE => `, updateResult);
         callback(true);
       }catch(e){
         console.log(`[DB] UPDATE ERROR: ${e}`);
@@ -61,7 +61,7 @@ const database = {
 
       try{
         const queryResult = await database.collection.find(fields).toArray();
-        console.log(`[DB] QUERY: `, queryResult);
+        //console.log(`[DB] QUERY: `, queryResult);
         callback(queryResult);
       }catch(e){
         console.log(`[DB] QUERY ERROR: ${e}`);
@@ -78,7 +78,7 @@ const database = {
 
       try{
         const deleteResult = await database.collection.deleteOne(fields);
-        console.log(`[DB] DELETE: `, deleteResult);
+        //console.log(`[DB] DELETE: `, deleteResult);
         callback(true);
       }catch(e){
         console.log(`[DB] DELETE ERROR: ${e}`);
@@ -95,7 +95,7 @@ const database = {
 
       try{
         const lastResult = await database.collection.find().sort( [['_id', -1]]).limit(1);
-        console.log(`[DB] LAST: `, lastResult);
+        //console.log(`[DB] LAST: `, lastResult);
         callback(lastResult);
       }catch(e){
         console.log(`[DB] LAST ERROR: ${e}`);
@@ -115,7 +115,7 @@ const database = {
 
         try{
           const dropResult = await database.collection.clean();
-          console.log(`[DB] DROP: `, dropResult);
+          //console.log(`[DB] DROP: `, dropResult);
           callback(true);
         }catch(e){
           console.log(`[DB] DROP ERROR: ${e}`);
@@ -133,7 +133,7 @@ const database = {
 
         try{
           const cleanResult = await database.collection.deleteMany({});
-          console.log(`[DB] CLEAN: `, cleanResult);
+          //console.log(`[DB] CLEAN: `, cleanResult);
           callback(true);
         }catch(e){
           console.log(`[DB] CLEAN ERROR: ${e}`);
