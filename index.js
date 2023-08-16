@@ -1,6 +1,7 @@
 const api = require("./api/index.js");
 const database = require("./db/mongo.js");
-const neo = require('./db/neo.js');
+const graph = require("./lib/graph/index.js");
+const neo = require("./db/neo.js");
 const scanner = require("./lib/scan/index.js");
 const warehouse = require("./lib/warehouse/index.js");
 const queue = require("./lib/queue/index.js");
@@ -10,6 +11,7 @@ function reset() {
   database.collections.clean("index");
   database.collections.clean("players");
   database.collections.clean("organizations");
+  neo.clean();
   
   database.index.set({ name: "player id", index: 0 });
   database.index.set({ name: "player crawler", index: 0 });
@@ -18,6 +20,7 @@ function reset() {
 
   api.organization.members.all("MOBI").then(data => {
     warehouse.organization(data);
+    graph.organization(data);
   })
 }
 
@@ -52,7 +55,5 @@ function start() {
   orgs();
 }
 
-start();
-//reset();
-
-//neo.insert({ handle: "Bo-Fone" })
+//start();
+reset();

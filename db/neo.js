@@ -10,20 +10,29 @@ const neo = {
       database: config.neo.database, 
       defaultAccessMode: neo4j.session.WRITE 
     } ),
-  
-  insert: async (data) => {
-    const insertResult = await neo.session.run(
-      `CREATE (a:Person { name: $name }) RETURN a`,
-      { name: data.handle }
-    )
 
-    const singleRecord = insertResult.records[0];
-    const node = singleRecord.get(0);
+  query: (data) => {
+    return new Promise(async callback => {
+      const queryResult = await neo.session.run(data.query, data.data).catch(e => {
+        console.log(`[NEO ERROR]: `, e);
+        callback();
+      })
 
-    console.log(node);
+      const singelRecord = queryResult.records[0];
+      const node = singelRecord.get(0);
+
+      callback(node);
+    })
+  },
+
+  clean: async () => {
+    const query = `MATCH (n) DETACH DELETE n`;
+    const deleteResult = await neo.session.run(query).catch(e => {
+      console.log(e);
+    })
+
+    return deleteResult;
   }
-
-  
 }
 
 module.exports = neo;

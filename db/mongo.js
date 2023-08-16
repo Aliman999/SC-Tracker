@@ -114,9 +114,9 @@ const database = {
         }
 
         try{
-          const dropResult = await database.collection.clean();
+          const dropResult = await database.collection.drop();
           //console.log(`[DB] DROP: `, dropResult);
-          callback(true);
+          callback(dropResult);
         }catch(e){
           console.log(`[DB] DROP ERROR: ${e}`);
           callback(false);
