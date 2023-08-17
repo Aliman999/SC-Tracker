@@ -49,7 +49,7 @@ const player = async (handle) => {
 
     for(let i = 0; i < elemLabels.length; i++){
       if(i != 0){
-        user.profile[elemLabels.eq(i).text().toLowerCase()] = elemValues.eq(i).text().replace(/\s{2,}/g,'').trim().split(',');
+        user.profile[elemLabels.eq(i).text().toLowerCase()] = elemValues.eq(i).text().replace(/\s{2,}/g,'').trim().split(', ');
       }else{
         const d = new Date(parseInt(elemValues.eq(i).text().replace(',', '').split(' ')[2]), getMonthFromString(elemValues.eq(i).text().replace(',', '').split(' ')[0]), parseInt(elemValues.eq(i).text().replace(',', '').split(' ')[1]))
         user.profile[elemLabels.eq(i).text().toLowerCase()] = d;

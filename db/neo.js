@@ -11,9 +11,9 @@ const neo = {
       defaultAccessMode: neo4j.session.WRITE 
     } ),
 
-  query: (data) => {
+  query: (query, fields) => {
     return new Promise(async callback => {
-      const queryResult = await neo.session.run(data.query, data.data).catch(e => {
+      const queryResult = await neo.session.run(query, fields).catch(e => {
         console.log(`[NEO ERROR]: `, e);
         callback();
       })

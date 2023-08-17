@@ -19,8 +19,12 @@ function reset() {
   database.index.set({ name: "organization crawler", index: 0 });
 
   api.organization.members.all("MOBI").then(data => {
-    warehouse.organization(data);
-    graph.organization(data);
+    warehouse.organization(JSON.parse(JSON.stringify(data)));
+    graph.organization(JSON.parse(JSON.stringify(data)));
+  })
+  api.player("JamesDusky").then(data => {
+    warehouse.player(JSON.parse(JSON.stringify(data)));
+    graph.player(JSON.parse(JSON.stringify(data)));
   })
 }
 
