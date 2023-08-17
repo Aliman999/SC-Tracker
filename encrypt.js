@@ -36,8 +36,8 @@ var walk = function(dir, done) {
           })
           const dir = file.split("\\");
           dir.splice(5, 0, `encrypted`);
-          //fs.writeFileSync(dir.join("\\"), obfuscationResult._obfuscatedCode, { flag: 'w' });
-          fs.writeFileSync(dir.join("\\"), fs.readFileSync(file, 'utf8'), { flag: 'w' });
+          fs.writeFileSync(dir.join("\\"), obfuscationResult._obfuscatedCode, { flag: 'w' });
+          //fs.writeFileSync(dir.join("\\"), fs.readFileSync(file, 'utf8'), { flag: 'w' });
         }else{
           fs.stat(file, function(err, stat) {
             if (stat && stat.isDirectory()) {
