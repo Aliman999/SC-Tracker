@@ -59,5 +59,5 @@ function start() {
   orgs();
 }
 
-//start();
-reset();
+start();
+//reset();
