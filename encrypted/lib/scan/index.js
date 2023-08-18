@@ -12,7 +12,10 @@ const scanner = {
           //This means we have not reached the end of our list
           let count = 0;
           let organizations = [];
-          organizations.push(data[0].organization);
+          
+          if(data[0].organization?.sid){
+            organizations.push(data[0].organization);
+          }
 
           data[0].affiliations.forEach(org => {
             organizations.push(org);

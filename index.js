@@ -64,5 +64,5 @@ process.on('unhandledRejection', (reason, p) => {
   // application specific logging, throwing an error, or other logic here
 });
 
-//start();
-reset();
+start();
+//reset();
