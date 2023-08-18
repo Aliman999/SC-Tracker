@@ -22,7 +22,7 @@ function reset() {
     warehouse.organization(JSON.parse(JSON.stringify(data)));
     graph.organization(JSON.parse(JSON.stringify(data)));
   })
-  api.player("JamesDusky").then(data => {
+  api.player("Couger2274").then(data => {
     warehouse.player(JSON.parse(JSON.stringify(data)));
     graph.player(JSON.parse(JSON.stringify(data)));
   })
@@ -64,5 +64,5 @@ process.on('unhandledRejection', (reason, p) => {
   // application specific logging, throwing an error, or other logic here
 });
 
-start();
-//reset();
+//start();
+reset();

@@ -58,7 +58,7 @@ const player = async (handle) => {
     //Populates Languages, Location and Enlistment Date
 
     //Populates Primary Organization Information
-    if($('div.restriction').length){
+    if($('div.main-org').children('div.inner').children('div.empty').text() == `NO MAIN ORG FOUND IN PUBLIC RECORDS`){
       user.organization = {
         name: 'REDACTED',
       }
