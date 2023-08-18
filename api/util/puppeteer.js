@@ -6,19 +6,21 @@ puppeteer.use(StealthPlugin());
 
 const options = {
   headless: "new",
+  executablePath: '/usr/bin/chromium-browser',
   args: [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-dev-shm-usage',
-    '--disable-accelerated-2d-canvas',
-    '--no-first-run',
-    '--no-zygote',
+    //'--disable-dev-shm-usage',
+    //'--disable-accelerated-2d-canvas',
+    //'--no-first-run',
     //'--single-process',
+    //'--aggressive-cache-discard',
+    //'--disable-cache',
+    //'--disable-application-cache',
+    //'--disable-offline-load-stale-cache',
+    '--devtools-flags=disable',
     '--disable-gpu',
-    '--aggressive-cache-discard',
-    '--disable-cache',
-    '--disable-application-cache',
-    '--disable-offline-load-stale-cache',
+    '--disable-setuid-sandbox',
+    '--no-sandbox',
+    '--no-zygote'
   ],
 }
 
@@ -27,7 +29,7 @@ const api = {
   run: (url) => {
     return new Promise(async callback => {
       let selector;
-
+      console.log(url);
       if(url.includes("organizations")){
         selector = "div.profile-content";
       }else if(url.includes("citizens")){
@@ -40,7 +42,7 @@ const api = {
       const browser = await puppeteer.launch(options);
       const page = await browser.newPage();
       await page.goto(url, { timeout: 0 });
-      await page.waitForSelector(selector, { timeout: 3000 })
+      await page.waitForSelector(selector)
         .catch(() => {
           callback(0);
           return;

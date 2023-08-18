@@ -17,27 +17,11 @@ var walk = function(dir, done) {
           var obfuscationResult = JavaScriptObfuscator.obfuscate(fs.readFileSync(file, 'utf8'),
           {
             compact: true,
-            controlFlowFlattening: true,
-            controlFlowFlatteningThreshold: 1,
-            deadCodeInjection: true,
-            deadCodeInjectionThreshold: 1,
-            debugProtection: true,
-            debugProtectionInterval: 1,
-            disableConsoleOutput: true,
-            log: false,
-            mangle: false,
-            renameGlobals: false,
-            rotateStringArray: true,
-            selfDefending: true,
-            stringArray: true,
-            stringArrayEncoding: ['rc4'],
-            stringArrayThreshold: 1,
-            unicodeEscapeSequence: false
           })
           const dir = file.split("\\");
           dir.splice(5, 0, `encrypted`);
-          fs.writeFileSync(dir.join("\\"), obfuscationResult._obfuscatedCode, { flag: 'w' });
-          //fs.writeFileSync(dir.join("\\"), fs.readFileSync(file, 'utf8'), { flag: 'w' });
+          //fs.writeFileSync(dir.join("\\"), obfuscationResult._obfuscatedCode, { flag: 'w' });
+          fs.writeFileSync(dir.join("\\"), fs.readFileSync(file, 'utf8'), { flag: 'w' });
         }else{
           fs.stat(file, function(err, stat) {
             if (stat && stat.isDirectory()) {
