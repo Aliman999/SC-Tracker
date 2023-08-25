@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon --max_old_space_size=400 index.js",
     "test": "jest",
-    "deploy": "node encrypt.js"
+    "deploy": "node encrypt.js",
+    "log": "nodemon --max_old_space_size=400 index.js > ./logs/log.txt 2> ./logs/errors.txt"
   },
   "author": "",
   "license": "ISC",

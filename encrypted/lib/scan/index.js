@@ -4,47 +4,56 @@ const db = require("../../db/mongo.js");
 const graph = require("../graph/index.js");
 const warehouse = require("../warehouse/index.js");
 
+var OneDay = new Date().getTime() + (1 * 24 * 60 * 60 * 1000)
+
 const scanner = {
   players: (callback) => {
     db.index.get(config.index.player.crawler).then(index => {
-      db.query({ _id: index.index }, "players").then(data => {
-        if(data.length){
+      db.query({ _id: index.index }, "players").then(player => {
+        if(player[0]._id != db.id["player id"]){
           //This means we have not reached the end of our list
+          console.log(`[SCANNER] Started Player: ${player[0].profile.handle}`);
           let count = 0;
           let organizations = [];
           
-          if(data[0].organization?.sid){
-            organizations.push(data[0].organization);
+          if(player[0].organization?.sid){
+            organizations.push(player[0].organization);
           }
 
-          data[0].affiliations.forEach(org => {
+          player[0].affiliations.forEach(org => {
             organizations.push(org);
           })
           
           organizations.forEach(org => {
             db.query({ "data.sid": org.sid }, "organizations").then(data => {
-              api.organization.members.all(org.sid).then(org => {
+              if(data.length){
                 count++;
-                if(data.length){
-                  //If the organization exists in our database we will check historical data
-                }else{
-                  //We did not find the organization in the database
-                  warehouse.organization(JSON.parse(JSON.stringify(org)));
-                  //graph.organization(JSON.parse(JSON.stringify(org)));
+                if (data[0].lastUpdated >= OneDay) {
+                  //Update
+                  //console.log("Org data stored over one day");
                 }
-              })
+              }else{
+                api.organization.members.all(org.sid).then(async api_Org => {
+                  count++;
+
+                  //We did not find the organization in the database
+                  await warehouse.organization(JSON.parse(JSON.stringify(api_Org)));
+                  //graph.organization(JSON.parse(JSON.stringify(org)));
+                })
+              }
             })
           })
 
           let done = setInterval(() => {
             if(count == organizations.length){
               db.index.increment(config.index.player.crawler);
+              console.log(`[SCANNER] Finished Player: ${player[0].profile.handle}`);
               clearInterval(done);
               callback();
             }
           }, 1000);
         }else{
-          db.index.reset(config.index.organization.crawler);
+          db.index.reset(config.index.player.crawler);
           callback();
         }
       })
@@ -53,31 +62,38 @@ const scanner = {
 
   organizations: (callback) => {
     db.index.get(config.index.organization.crawler).then(index => {
-      db.query({ _id: index.index }, "organizations").then(data => {
-        if(data.length){
+      db.query({ _id: index.index }, "organizations").then(org => {
+        if(org[0]._id != db.id["organization id"]){
+          console.log(`[SCANNER] Started Org: ${org[0].data.name}`);
           //This means we have not reached the end of our list
-          let members = data[0].members.visible;
+          let members = org[0].members.visible;
           let count = 0;
 
-          data[0].members.data.visible.forEach(member => {
+          org[0].members.data.visible.forEach(member => {
             db.query({ "profile.handle": member.handle }, "players").then(data => {
-              api.player(member.handle).then(player => {
+              if(data.length){
                 count++;
-                if(data.length){
-                  //If the player exists in our database we will check historical data
-                }else{
-                  //We did not find the player in the database
-                  warehouse.player(JSON.parse(JSON.stringify(player)));
-                  //graph.player(JSON.parse(JSON.stringify(player)));
+                if (data[0].lastUpdated <= OneDay) {
+                  //Update
+                  //console.log("Player data stored over one day");
                 }
-              })
+              }else{
+                api.player(member.handle).then(async player => {
+                  count++;
+
+                  //We did not find the player in the database
+                  await warehouse.player(JSON.parse(JSON.stringify(player)));
+                  //graph.player(JSON.parse(JSON.stringify(player)));
+                })
+              }
             })
           })
           
-          let done = setInterval(() => {
+          let done = setInterval(async () => {
             if(count == members){
-              db.index.increment(config.index.organization.crawler);
-              clearInterval(done)
+              clearInterval(done);
+              await db.index.increment(config.index.organization.crawler);
+              console.log(`[SCANNER] Stored Players of ${org[0].data.name}`);
               callback();
             }
           }, 1000);

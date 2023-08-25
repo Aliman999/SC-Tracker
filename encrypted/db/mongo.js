@@ -1,7 +1,5 @@
 const config = require('../config/index.js');
-
 const { MongoClient } = require('mongodb');
-
 const options = config.mongodb;
 
 //
@@ -14,6 +12,10 @@ const options = config.mongodb;
 const database = {
   client: new MongoClient(options.host),
   collection: options.playerCollection,
+  id: {
+    "player id": 0,
+    "organization id": 0
+  },
 
   insert: (data, collection = null) => {
     return new Promise(async callback => {
@@ -44,7 +46,7 @@ const database = {
 
       try{
         const updateResult = await database.collection.updateOne(query, newData);
-        //console.log(`[DB] UPDATE => `, updateResult);
+        //console.log(`[DB] UPDATE => `, query, newData);
         callback(true);
       }catch(e){
         console.log(`[DB] UPDATE ERROR: ${e}`);
@@ -149,7 +151,10 @@ const database = {
         database.collection = await database.client.collection(options.indexCollection);
 
         try{
-          database.query(fields).then(data => {
+          await database.query(fields).then(data => {
+            if(data[0].name == "player id" || data[0].name == "organization id"){
+              database.id[data[0].name] = data[0].index;
+            }
             callback(data[0]);
           })
         }catch(e){
@@ -179,7 +184,7 @@ const database = {
         database.collection = await database.client.collection(options.indexCollection);
 
         try{
-          database.update(fields, { $inc: { index: 1 } }).then(data => {
+          await database.update(fields, { $inc: { index: 1 } }).then(data => {
             callback(data);
           })
         }catch(e){

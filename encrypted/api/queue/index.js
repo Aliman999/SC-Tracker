@@ -4,6 +4,8 @@ const player = require('../player/search.js');
 const info = require('../organization/search.js');
 const members = require('../organization/members.js');
 
+const config = require("../../config/index.js");
+
 process.setMaxListeners(0);
 
 const api = {
@@ -23,11 +25,13 @@ const options = {
     reservoirIncreaseInterval: 1000, // must be divisible by 250
     reservoirIncreaseMaximum: 40,
     maxConcurrent: 4,
-    minTime: 100
+    minTime: 100,
+    timeout: 10000,
   },
   organization: {
     maxConcurrent: 1,
-    minTime: 800
+    minTime: 800,
+    timeout: 10000,
   }
 };
 
