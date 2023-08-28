@@ -19,7 +19,9 @@ const api = {
           const $ = cheerio.load(result.data.data.html);
           callback($);
         }catch(e){
+          console.log("Fetch Error: ");
           console.log(result.data);
+          api.run(url, payload);
         }
       })
     })

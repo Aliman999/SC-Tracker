@@ -4,13 +4,14 @@ const db = require("../../db/mongo.js");
 const graph = require("../graph/index.js");
 const warehouse = require("../warehouse/index.js");
 
-var OneDay = new Date().getTime() + (1 * 24 * 60 * 60 * 1000)
+var OneDay = new Date().getTime() + (1 * 24 * 60 * 60 * 1000);
+
 
 const scanner = {
   players: (callback) => {
     db.index.get(config.index.player.crawler).then(index => {
       db.query({ _id: index.index }, "players").then(player => {
-        if(player[0]._id != db.id["player id"]){
+        if(player.length && Number.isInteger(player[0]?._id) && player[0]?._id <= db.id["player id"]){
           //This means we have not reached the end of our list
           console.log(`[SCANNER] Started Player: ${player[0].profile.handle}`);
           let count = 0;
@@ -63,7 +64,7 @@ const scanner = {
   organizations: (callback) => {
     db.index.get(config.index.organization.crawler).then(index => {
       db.query({ _id: index.index }, "organizations").then(org => {
-        if(org[0]._id != db.id["organization id"]){
+        if(org.length && Number.isInteger(org[0]?._id) && org[0]?._id <= db.id["organization id"]){
           console.log(`[SCANNER] Started Org: ${org[0].data.name}`);
           //This means we have not reached the end of our list
           let members = org[0].members.visible;

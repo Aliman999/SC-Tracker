@@ -41,7 +41,7 @@ const organization = async (sid) => {
 
     organization.data = {
       name: name[0],
-      sid: name[1],
+      sid: name[name.length-1],
       banner: imgRoot+$('div.banner').children('img').attr('src'),
       logo: imgRoot+$('div.inner').children('div.logo').children('img').attr('src'),
       archetype: $('div.inner').children('ul.tags').children('li.model').text(),

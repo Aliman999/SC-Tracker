@@ -1,7 +1,7 @@
 const api = require("./api/index.js");
 const database = require("./db/mongo.js");
 const graph = require("./lib/graph/index.js");
-const neo = require("./db/neo.js");
+const neo = require("./db/neo.js")
 const scanner = require("./lib/scan/index.js");
 const warehouse = require("./lib/warehouse/index.js");
 const queue = require("./lib/queue/index.js");
@@ -54,7 +54,9 @@ async function orgs() {
   }
 }
 
-function start() {
+async function start() {
+  await database.index.get({ name: "organization id" })
+  await database.index.get({ name: "player id" })
   players();
   orgs();
 }

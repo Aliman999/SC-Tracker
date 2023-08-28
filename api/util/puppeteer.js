@@ -9,7 +9,7 @@ const options = {
   headless: "new",
   executablePath: config.dev ? "" : '/usr/bin/chromium-browser',
   args: [
-    //'--disable-dev-shm-usage',
+    '--disable-dev-shm-usage',
     //'--disable-accelerated-2d-canvas',
     //'--no-first-run',
     //'--single-process',
@@ -46,16 +46,17 @@ const api = {
       try{
         await page.goto(url, { timeout: 0, waitUntil: "domcontentloaded", });
         await page.waitForSelector(selector)
+
+        const dom = await page.$eval('*', (el) => el.innerHTML);
+        const $ = await cheerio.load(dom);
+
+        await browser.close();
+        callback($);
       }catch(e){
+        console.log("Puppeteer error");
         console.log(e);
         api.run(url);
       }
-
-      const dom = await page.$eval('*', (el) => el.innerHTML);
-      const $ = await cheerio.load(dom);
-
-      await browser.close();
-      callback($);
     })
   }
 }
