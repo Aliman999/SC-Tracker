@@ -18,7 +18,7 @@ const options = {
     //'--disable-application-cache',
     //'--disable-offline-load-stale-cache',
     '--devtools-flags=disable',
-    '--disable-gpu',
+    //'--disable-gpu',
     '--disable-setuid-sandbox',
     '--no-sandbox',
     '--no-zygote'
