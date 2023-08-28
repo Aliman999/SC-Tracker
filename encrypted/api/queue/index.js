@@ -30,7 +30,7 @@ const options = {
   },
   organization: {
     maxConcurrent: 1,
-    minTime: 800,
+    minTime: 10000,
     timeout: 10000,
   }
 };

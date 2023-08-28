@@ -31,7 +31,7 @@ const organization = async (sid) => {
   await api.run(orgURL+sid).then($ => {
     if(!$('div.inner').html()){
       organization.status = $;
-      organization.message = "Organization not found";
+      organization.message = `Organization: ${sid} not found`;
       const err = new Error(organization.message);
       err.data = organization;
       throw err;
