@@ -3,8 +3,8 @@ const cheerio = require("cheerio");
 
 const api = {
   run: async (url, payload) => {
-    return new Promise(async callback => {
-      await axios((url), {
+    return new Promise(callback => {
+      axios((url), {
         method: 'post',
         headers: { 
           'Accept': 'application/json',

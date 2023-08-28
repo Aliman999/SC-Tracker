@@ -60,7 +60,6 @@ const organizationMembers = async (sid, page = 1) => {
         display: 'REDACTED',
       })
     }
-    
   })
   
   return members;
