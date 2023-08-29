@@ -129,7 +129,7 @@ queue.search.pool.on('failed', async (error, jobInfo) => {
   const id = jobInfo.options.id;
   console.warn(`Job ${id} failed: ${error}`);
 
-  if (jobInfo.retryCount === 0) {
+  if (jobInfo.retryCount <= 3) {
     console.log(`Retrying job ${id} in 10s!`);
     return 10000;
   }
@@ -139,7 +139,7 @@ queue.search.organization.pool.on('failed', async (error, jobInfo) => {
   const id = jobInfo.options.id;
   console.warn(`Job ${id} failed: ${error}`);
 
-  if (jobInfo.retryCount === 0) {
+  if (jobInfo.retryCount <= 3) {
     console.log(`Retrying job ${id} in 10s!`);
     return 10000;
   }
