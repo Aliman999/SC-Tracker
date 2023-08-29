@@ -25,7 +25,7 @@ const api = {
           },
           data: payload ? payload : "",
         }).then((result) => {
-          if(result.status == 403){
+          if(result.status != 200){
             console.log(result);
             process.exit();
           }
