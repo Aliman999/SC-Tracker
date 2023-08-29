@@ -23,9 +23,7 @@ const api = {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
         callback($);
       }).catch((e) => {
-        console.log("Fetch Error");
-        console.log(url);
-        console.log(e.status);
+        console.log(e);
         callback(null);
       })
     })
