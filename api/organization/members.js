@@ -1,4 +1,4 @@
-const fetch = require('../util/fetch.js');
+const fetch = require('../util/axios.js');
 
 const imgRoot = `https://robertsspaceindustries.com`;
 const orgMembersURL = `https://robertsspaceindustries.com/api/orgs/getOrgMembers`;

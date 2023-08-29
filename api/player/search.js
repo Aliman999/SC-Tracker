@@ -1,4 +1,4 @@
-const api = require("../util/fetch.js");
+const api = require("../util/axios.js");
 
 const imgRoot = `https://robertsspaceindustries.com`;
 const citizenURL = `https://robertsspaceindustries.com/citizens/`;
