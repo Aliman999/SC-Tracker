@@ -20,7 +20,7 @@ const options = {
   player: {  
     reservoir: 600, // initial value 604
     reservoirIncreaseAmount: 2,
-    reservoirIncreaseInterval: 12000, // must be divisible by 250
+    reservoirIncreaseInterval: 15000, // must be divisible by 250
     reservoirIncreaseMaximum: 40,
     maxConcurrent: 4,
     minTime: 1000,
