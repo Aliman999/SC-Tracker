@@ -30,7 +30,7 @@ function reset() {
 
 async function players() {
   if(queue.scan.player.status){
-    queue.scan.player.pool.schedule(async () => {
+    queue.scan.player.pool.schedule(async () => {//test
       scanner.players(() => {
         queue.scan.player.status = true;
         setTimeout(players, 1000);
