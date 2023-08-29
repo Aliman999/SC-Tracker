@@ -28,11 +28,8 @@ const api = {
       axios((url), options).then((result) => {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
         
-        try{
-          console.timeEnd("rateLimit");
-        }catch(e){
-          
-        }
+        console.timeEnd("rateLimit");
+        
         i++;
         callback($);
       }).catch((e) => {
@@ -49,7 +46,6 @@ const api = {
             console.log(`Error Logged in ${directory}`);
           });
         }
-        console.log();
         callback(null);
       })
     })
