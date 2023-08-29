@@ -29,7 +29,7 @@ const api = {
       }).catch((e) => {
         console.log(e.response);
         const directory = `./logs/${Date.now()}-Error.txt`
-        fs.writeFile(directory, e.response.data, function (err) {
+        fs.writeFile(directory, e.response.data, { flag: 'wx' }, function (err) {
           if (err) throw err;
           console.log(`Error Logged in ${directory}`);
         }); 
