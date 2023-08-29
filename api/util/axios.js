@@ -14,17 +14,22 @@ const api = {
   run: async (url, payload = null) => {
     return new Promise(callback => {
       operation.attempt(() => {
-        axios((url), {
+        var options = {
           method: 'post',
-          headers: { 
+          headers: {
             'Accept': 'application/json',
             'Accept-Language': 'en-US,en;q=0.5', 
             'User-Agent': "Mozilla/5.0",
             'Cache-Control': 'no-cache',
             'Cookie': "Rsi-Token="
-          },
-          data: payload ? payload : "",
-        }).then((result) => {
+          }
+        }
+        
+        if(payload){
+          options.data = payload;
+        }
+
+        axios((url), options).then((result) => {
             const $ = cheerio.load(payload ? result.data.data.html : result.data);
             callback($);
           if(result.status != 200){
