@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 const retry = require('retry');
 
 const operation = retry.operation({
-  retries: 5,
+  retries: 10,
   factor: 3,
   minTimeout: 1 * 1000,
   maxTimeout: 60 * 1000,
