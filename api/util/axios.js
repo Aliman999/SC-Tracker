@@ -1,6 +1,10 @@
 const axios = require('axios');
 const cheerio = require("cheerio");
 
+const { dirname } = require('path');
+const appDir = dirname(require.main.filename);
+const fs = require('fs');
+
 const api = {
   run: async (url, payload = null) => {
     return new Promise(callback => {
@@ -23,15 +27,9 @@ const api = {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
         callback($);
       }).catch((e) => {
-        fs.writeFile("books.txt", data, (err) => {
-          if (err)
-            console.log(err);
-          else {
-            console.log("File written successfully\n");
-            console.log("The written has the following contents:");
-            console.log(fs.readFileSync("books.txt", "utf8"));
-          }
-        });
+        fs.writeFile(`./logs/${Date.now()}-Error.txt`, e.response, function (err) {
+          if (err) throw err;               console.log('Results Received');
+        }); 
         console.log(e);
         callback(null);
       })
