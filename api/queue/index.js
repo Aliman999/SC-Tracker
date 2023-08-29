@@ -18,9 +18,9 @@ const api = {
 
 const options = {
   player: {  
-    reservoir: 5, // initial value
+    reservoir: 600, // initial value 604
     reservoirIncreaseAmount: 2,
-    reservoirIncreaseInterval: 1000, // must be divisible by 250
+    reservoirIncreaseInterval: 10000, // must be divisible by 250
     reservoirIncreaseMaximum: 40,
     maxConcurrent: 4,
     minTime: 1000,
@@ -130,8 +130,8 @@ queue.search.pool.on('failed', async (error, jobInfo) => {
   console.warn(`Job ${id} failed: ${error}`);
 
   if (jobInfo.retryCount === 0) {
-    console.log(`Retrying job ${id} in 500ms!`);
-    return 500;
+    console.log(`Retrying job ${id} in 10s!`);
+    return 10000;
   }
 })
 
@@ -140,8 +140,8 @@ queue.search.organization.pool.on('failed', async (error, jobInfo) => {
   console.warn(`Job ${id} failed: ${error}`);
 
   if (jobInfo.retryCount === 0) {
-    console.log(`Retrying job ${id} in 500ms!`);
-    return 500;
+    console.log(`Retrying job ${id} in 10s!`);
+    return 10000;
   }
 })
 

@@ -7,6 +7,8 @@ const fs = require('fs');
 
 var i = 0;
 
+var start = true;
+
 const api = {
   run: async (url, payload = null) => {
     return new Promise(callback => {
@@ -28,14 +30,20 @@ const api = {
       axios((url), options).then((result) => {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
         
-        console.timeEnd("rateLimit");
+        if(!start){
+          console.timeEnd("rateLimit");
+          start = true;
+        }
 
         i++;
         callback($);
       }).catch((e) => {
         //console.log(e.response.data);
         
-        console.time("rateLimit");
+        if(start){
+          console.time("rateLimit");
+          start = false;
+        }
 
         console.log(i);
 
