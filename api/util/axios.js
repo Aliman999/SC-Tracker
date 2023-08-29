@@ -15,7 +15,7 @@ const api = {
     return new Promise(callback => {
       operation.attempt(() => {
         axios((url), {
-          method: 'post',
+          method: payload ? 'post' : "get",
           headers: { 
             'Accept': 'application/json',
             'Accept-Language': 'en-US,en;q=0.5', 
@@ -27,7 +27,7 @@ const api = {
         }).then((result) => {
           if(result.status != 200){
             console.log(result);
-            process.exit();
+            process.exit(0);
           }
           try{
             const $ = cheerio.load(payload ? result.data.data.html : result.data);
