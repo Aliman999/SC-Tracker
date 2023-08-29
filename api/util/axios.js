@@ -28,7 +28,7 @@ const api = {
         callback($);
       }).catch((e) => {
         console.log(e.response.data);
-        const directory = `./logs/${Date.now()}-Error.txt`
+        const directory = `${appDir}/logs/${Date.now()}-Error.txt`
         fs.writeFile(directory, e.response.data, { flag: 'wx' }, function (err) {
           if (err) throw err;
           console.log(`Error Logged in ${directory}`);
