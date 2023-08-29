@@ -5,6 +5,8 @@ const { dirname } = require('path');
 const appDir = dirname(require.main.filename);
 const fs = require('fs');
 
+const i = 0;
+
 const api = {
   run: async (url, payload = null) => {
     return new Promise(callback => {
@@ -31,12 +33,14 @@ const api = {
         }catch(e){
           
         }
-
+        i++;
         callback($);
       }).catch((e) => {
         //console.log(e.response.data);
         
         console.time("rateLimit");
+
+        console.log(i);
 
         if(e.response.status != 404){
           const directory = `${appDir}/logs/${Date.now()}-Error.txt`
