@@ -16,7 +16,7 @@ const player = async (handle) => {
   await api.run(citizenURL+handle).then($ => {
     if (!$) {
       user.status = $;
-      user.message = "User not found";
+      user.message = `User: ${handle} not found`;
       const err = new Error(user.message);
       err.data = user;
       throw err;
