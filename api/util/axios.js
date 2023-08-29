@@ -25,7 +25,11 @@ const api = {
 
       axios((url), options).then((result) => {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
-        console.timeEnd("rateLimit");
+        try{
+          console.timeEnd("rateLimit");
+        }catch(e){
+          
+        }
         callback($);
       }).catch((e) => {
         //console.log(e.response.data);
