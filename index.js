@@ -71,6 +71,5 @@ start();
 
 
 /*
-This is a git test
-Here is a main comment
+main must be our main branch
 */
