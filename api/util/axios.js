@@ -15,7 +15,7 @@ const api = {
     return new Promise(callback => {
       operation.attempt(() => {
         axios((url), {
-          method: payload ? 'post' : "get",
+          method: 'post',
           headers: { 
             'Accept': 'application/json',
             'Accept-Language': 'en-US,en;q=0.5', 
