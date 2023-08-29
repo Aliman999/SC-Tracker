@@ -68,9 +68,3 @@ process.on('unhandledRejection', (reason, p) => {
 
 start();
 //reset();
-
-
-/*
-This is a git test
-Here is a main comment
-*/
