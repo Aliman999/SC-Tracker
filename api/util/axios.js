@@ -5,7 +5,7 @@ const { dirname } = require('path');
 const appDir = dirname(require.main.filename);
 const fs = require('fs');
 
-const i = 0;
+var i = 0;
 
 const api = {
   run: async (url, payload = null) => {
@@ -29,7 +29,7 @@ const api = {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
         
         console.timeEnd("rateLimit");
-        
+
         i++;
         callback($);
       }).catch((e) => {
