@@ -22,7 +22,7 @@ function reset() {
     warehouse.organization(JSON.parse(JSON.stringify(data)));
     graph.organization(JSON.parse(JSON.stringify(data)));
   })
-  api.player("Couger2274").then(data => {
+  api.player("Grinlike").then(data => {
     warehouse.player(JSON.parse(JSON.stringify(data)));
     graph.player(JSON.parse(JSON.stringify(data)));
   })

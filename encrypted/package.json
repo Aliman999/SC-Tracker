@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --max_old_space_size=400 index.js",
+    "start": "nodemon --exitcrash index.js",
     "test": "jest",
     "deploy": "node encrypt.js",
-    "log": "nodemon --max_old_space_size=400 index.js > ./logs/log.txt 2> ./logs/errors.txt"
+    "log": "nodemon --exitcrash index.js > ./logs/log.txt 2> ./logs/errors.txt"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "puppeteer": "^20.8.2",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "retry": "^0.13.1"
   }
 }

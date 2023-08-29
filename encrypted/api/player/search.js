@@ -28,6 +28,7 @@ const player = async (handle) => {
       handle: $('strong.value', 'p.entry').eq(2).text(),
       badge: { image: imgRoot+$('img', 'span.icon').attr('src'), text:$('span.value', 'p.entry').text() },
       image: imgRoot+$('img', 'div.thumb').attr('src'),
+      location: [],
     }
 
     user.profile.page = {
@@ -58,7 +59,7 @@ const player = async (handle) => {
     //Populates Languages, Location and Enlistment Date
 
     //Populates Primary Organization Information
-    if($('div.main-org').children('div.inner').children('div.empty').text() == `NO MAIN ORG FOUND IN PUBLIC RECORDS`){
+    if($('div.restriction-r')){
       user.organization = {
         name: 'REDACTED',
       }

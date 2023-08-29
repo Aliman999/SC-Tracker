@@ -1,13 +1,15 @@
 const cheerio = require("cheerio");
+const config = require("../../config/index.js");
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-const config = require("../../config/index.js");
+const retry = require('retry');
 
 puppeteer.use(StealthPlugin());
 
 const options = {
   headless: "new",
   executablePath: config.dev ? "" : '/usr/bin/chromium-browser',
+  devtools:false,
   args: [
     '--disable-dev-shm-usage',
     //'--disable-accelerated-2d-canvas',
@@ -17,7 +19,7 @@ const options = {
     //'--disable-cache',
     //'--disable-application-cache',
     //'--disable-offline-load-stale-cache',
-    '--devtools-flags=disable',
+    //'--devtools-flags=disable',
     //'--disable-gpu',
     '--disable-setuid-sandbox',
     '--no-sandbox',
@@ -25,6 +27,13 @@ const options = {
   ],
 }
 
+const operation = retry.operation({
+  retries: 5,
+  factor: 3,
+  minTimeout: 1 * 1000,
+  maxTimeout: 60 * 1000,
+  randomize: true,
+});
 
 const api = {
   run: (url) => {
@@ -39,24 +48,28 @@ const api = {
       }else{
         callback("Invalid URL");
       }
-      
-      const browser = await puppeteer.launch(options);
-      const page = await browser.newPage();
+      operation.attempt(() => {
+        puppeteer.launch(options).then(async (browser) => {
+          const page = await browser.newPage();
+          await page.setDefaultNavigationTimeout(0);
 
-      try{
-        await page.goto(url, { timeout: 0, waitUntil: "domcontentloaded", });
-        await page.waitForSelector(selector)
+          try{
+            await page.goto(url, { timeout: 0, waitUntil: "load", });
+            await page.waitForSelector(selector)
+            
+            const dom = await page.$eval('*', (el) => el.innerHTML);
 
-        const dom = await page.$eval('*', (el) => el.innerHTML);
-        const $ = await cheerio.load(dom);
-
-        await browser.close();
-        callback($);
-      }catch(e){
-        console.log("Puppeteer error");
-        console.log(e);
-        api.run(url);
-      }
+            const $ = await cheerio.load(dom);
+            callback($);
+          }catch(e){
+            console.log("Puppeteer error");
+            console.log(e);
+            operation.retry(e);
+          }finally{
+            await browser.close();
+          }
+        });
+      })
     })
   }
 }
