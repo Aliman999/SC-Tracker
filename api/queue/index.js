@@ -4,8 +4,6 @@ const player = require('../player/search.js');
 const info = require('../organization/search.js');
 const members = require('../organization/members.js');
 
-const config = require("../../config/index.js");
-
 process.setMaxListeners(0);
 
 const api = {
