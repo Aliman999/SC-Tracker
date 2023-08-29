@@ -35,7 +35,7 @@ const api = {
           })
         }catch(e){
           console.log("Fetch Error");
-          console.log(e);
+          //console.log(e);
           operation.retry(e);
         }
       });
