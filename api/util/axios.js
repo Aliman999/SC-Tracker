@@ -25,8 +25,19 @@ const api = {
 
       axios((url), options).then((result) => {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
+        
+        try{
+          console.timeEnd("rateLimit");
+        }catch(e){
+          
+        }
+
         callback($);
       }).catch((e) => {
+        //console.log(e.response.data);
+        
+        console.time("rateLimit");
+
         if(e.response.status != 404){
           const directory = `${appDir}/logs/${Date.now()}-Error.txt`
           fs.writeFile(directory, e.response.data, { flag: 'wx' }, function (err) {
@@ -34,6 +45,7 @@ const api = {
             console.log(`Error Logged in ${directory}`);
           });
         }
+        console.log();
         callback(null);
       })
     })
