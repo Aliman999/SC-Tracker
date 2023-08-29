@@ -131,7 +131,7 @@ queue.search.pool.on('failed', async (error, jobInfo) => {
 
   if (jobInfo.retryCount === 0) {
     console.log(`Retrying job ${id} in 25ms!`);
-    return 25;
+    return 500;
   }
 })
 
@@ -141,12 +141,8 @@ queue.search.organization.pool.on('failed', async (error, jobInfo) => {
 
   if (jobInfo.retryCount === 0) {
     console.log(`Retrying job ${id} in 25ms!`);
-    return 25;
+    return 500;
   }
 })
-
-const mergeDedupe = (arr) => {
-  return [...new Set([].concat(...arr))];
-}
 
 module.exports = queue;
