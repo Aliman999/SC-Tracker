@@ -26,7 +26,7 @@ const organizationMembers = async (sid, page = 1) => {
     if (!$) {
       members.status = $;
       members.message = "Members not found";
-    throw new Error(members);
+      throw new Error(members);
     }
 
     members.data = {
