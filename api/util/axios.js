@@ -25,7 +25,7 @@ const api = {
       }).catch((e) => {
         console.log("Fetch Error");
         console.log(url);
-        //console.log(e);
+        console.log(e.status);
         callback(null);
       })
     })
