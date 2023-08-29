@@ -27,7 +27,7 @@ const api = {
         const $ = cheerio.load(payload ? result.data.data.html : result.data);
         callback($);
       }).catch((e) => {
-        console.log(e.response);
+        console.log(e.response.data);
         const directory = `./logs/${Date.now()}-Error.txt`
         fs.writeFile(directory, e.response.data, { flag: 'wx' }, function (err) {
           if (err) throw err;
