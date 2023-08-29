@@ -1,4 +1,4 @@
-const api = require("../util/puppeteer.js");
+const api = require("../util/fetch.js");
 
 const imgRoot = `https://robertsspaceindustries.com`;
 const citizenURL = `https://robertsspaceindustries.com/citizens/`;

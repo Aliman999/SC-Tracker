@@ -11,9 +11,8 @@ const operation = retry.operation({
 });
 
 const api = {
-  run: async (url, payload) => {
+  run: async (url, payload = null) => {
     return new Promise(callback => {
-
       operation.attempt(() => {
         axios((url), {
           method: 'post',
@@ -24,10 +23,10 @@ const api = {
             'Cache-Control': 'no-cache',
             'Cookie': "Rsi-Token="
           },
-          data: payload,
+          data: payload ? payload : "",
         }).then((result) => {
           try{
-            const $ = cheerio.load(result.data.data.html);
+            const $ = cheerio.load(payload ? result.data.data.html : result.data);
             callback($);
           }catch(e){
             console.log("Fetch Error");
