@@ -25,6 +25,10 @@ const api = {
           },
           data: payload ? payload : "",
         }).then((result) => {
+          if(result.status == 403){
+            console.log(result);
+            process.exit();
+          }
           try{
             const $ = cheerio.load(payload ? result.data.data.html : result.data);
             callback($);
