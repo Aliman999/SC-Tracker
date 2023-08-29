@@ -18,7 +18,7 @@ const api = {
 
 const options = {
   player: {  
-    reservoir: 40, // initial value
+    reservoir: 5, // initial value
     reservoirIncreaseAmount: 2,
     reservoirIncreaseInterval: 1000, // must be divisible by 250
     reservoirIncreaseMaximum: 40,
