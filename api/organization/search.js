@@ -1,5 +1,4 @@
-const api = require('../util/puppeteer.js');
-const fetch = require('../util/fetch.js');
+const api = require('../util/fetch.js');
 
 const imgRoot = `https://robertsspaceindustries.com`;
 const orgURL = `https://robertsspaceindustries.com/orgs/`;
@@ -66,7 +65,7 @@ const organization = async (sid) => {
   })
 
 
-  await fetch.run(orgSearchURL, payload).then($ => {
+  await api.run(orgSearchURL, payload).then($ => {
     for(let i = 0; i < $('div.org-cell').length; i++){
       if($('div.org-cell').eq(i).children('a').children('span.left').children('span.identity').children('h3.name').text() == organization.data.name){
         organization.data.language = $('div.org-cell').eq(i).children('a').children('span.right').children('span.infocontainer').eq(0).children('span.infoitem').eq(1).children('span.value').text();
