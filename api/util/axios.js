@@ -28,11 +28,13 @@ const api = {
         callback($);
       }).catch((e) => {
         //console.log(e.response.data);
-        const directory = `${appDir}/logs/${Date.now()}-Error.txt`
-        fs.writeFile(directory, e.response.data, { flag: 'wx' }, function (err) {
-          if (err) throw err;
-          console.log(`Error Logged in ${directory}`);
-        }); 
+        if(e.response.status != 404){
+          const directory = `${appDir}/logs/${Date.now()}-Error.txt`
+          fs.writeFile(directory, e.response.data, { flag: 'wx' }, function (err) {
+            if (err) throw err;
+            console.log(`Error Logged in ${directory}`);
+          }); 
+        }
         callback(null);
       })
     })
