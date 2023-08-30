@@ -27,11 +27,6 @@ const database = {
         database.collection = await database.client.collection(collection);
       }
 
-      /*
-        REEFUNDIAN Inserted for some reason
-        agarKyramud Inserted for some reason
-      */
-
       try{
         const insertResult = await database.collection.insertMany(data);
         //console.log(`[DB] INSERT [${data.length}] => `, insertResult);

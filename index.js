@@ -21,10 +21,15 @@ function reset() {
   api.organization.members.all("MOBI").then(data => {
     warehouse.organization(JSON.parse(JSON.stringify(data)));
     graph.organization(JSON.parse(JSON.stringify(data)));
+  }).catch(e => {
+    console.log(e);
   })
+
   api.player("Grinlike").then(data => {
     warehouse.player(JSON.parse(JSON.stringify(data)));
     graph.player(JSON.parse(JSON.stringify(data)));
+  }).catch(e => {
+    console.log(e);
   })
 }
 
@@ -66,5 +71,5 @@ process.on('unhandledRejection', (reason, p) => {
   // application specific logging, throwing an error, or other logic here
 });
 
-start();
-//reset();
+//start();
+reset();
