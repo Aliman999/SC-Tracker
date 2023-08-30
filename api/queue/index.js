@@ -60,32 +60,32 @@ const queue = {
   search: {
     pool: new Bottleneck(options.player),
     player: (handle) => {
-      return new Promise(callback => {
+      return new Promise((callback, reject) => {
         queue.search.pool.schedule(api.search.player, handle).then(data => {
           callback(data);
         }).catch(e => {
-          callback(e);
+          reject(e);
         })
       })
     },
     organization: {
       pool: new Bottleneck(options.organization),
       info: (sid) => {
-        return new Promise(callback => {
-          queue.search.organization.pool.schedule(api.search.organization.info, sid).then(data => {
+        return new Promise((callback, reject) => {
+          queue.search.organization.pool.schedule(api.search.organization.info, sid).then((data, err) => {
             callback(data);
           }).catch(e => {
-            callback(e);
+            reject(e);
           })
         })
       },
       members: {
         page: (sid, page= 1) => {
-          return new Promise(callback => {
+          return new Promise((callback, reject) => {
             queue.search.organization.pool.schedule(api.search.organization.members, sid, page).then(data => {
               callback(data)
             }).catch(e => {
-              callback(e);
+              reject(e);
             })
           })
         },
@@ -101,7 +101,7 @@ const queue = {
             sid,
           };
 
-          return new Promise(async callback => {
+          return new Promise(async (callback, reject) => {
             await queue.search.organization.info(sid).then(async orgObject => {
               org = orgObject;
               for(let i = 1; i <= orgObject.data.pages; i++){
@@ -111,9 +111,11 @@ const queue = {
                   members.visible += data.visible;
                   members.redacted += data.redacted;
                 }).catch(e => {
-                  callback(e);
+                  reject(e);
                 })
               }
+            }).catch(e => {
+              reject(e);
             })
             delete members.sid;
             org.members = members;
@@ -127,20 +129,18 @@ const queue = {
 
 queue.search.pool.on('failed', async (error, jobInfo) => {
   const id = jobInfo.options.id;
-  console.warn(`Job ${id} failed: ${error}`);
+  console.warn(`Job ${error}`);
 
   if (jobInfo.retryCount <= 3) {
-    console.log(`Retrying job ${id} in 10s!`);
-    return 10000;
+    return 10;
   }
 })
 
 queue.search.organization.pool.on('failed', async (error, jobInfo) => {
   const id = jobInfo.options.id;
-  console.warn(`Job ${id} failed: ${error}`);
+  console.warn(`Job ${error}`);
 
   if (jobInfo.retryCount <= 3) {
-    console.log(`Retrying job ${id} in 10s!`);
     return 10000;
   }
 })

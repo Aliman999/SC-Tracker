@@ -7,7 +7,8 @@
     "start": "nodemon --exitcrash index.js",
     "test": "jest",
     "deploy": "node encrypt.js",
-    "log": "nodemon --exitcrash index.js > ./logs/log.txt 2> ./logs/errors.txt"
+    "log": "nodemon --exitcrash index.js > ./logs/log.txt 2> ./logs/errors.txt",
+    "neo": "nodemon neo.js"
   },
   "author": "",
   "license": "ISC",

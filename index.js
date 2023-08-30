@@ -57,7 +57,7 @@ async function orgs() {
 async function start() {
   await database.index.get({ name: "organization id" })
   await database.index.get({ name: "player id" })
-  players();
+  //players();
   orgs();
 }
 
