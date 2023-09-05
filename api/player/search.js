@@ -28,8 +28,9 @@ const player = async (handle) => {
       handle: $('strong.value', 'p.entry').eq(2).text(),
       badge: { image: imgRoot+$('img', 'span.icon').attr('src'), text:$('span.value', 'p.entry').text() },
       image: imgRoot+$('img', 'div.thumb').attr('src'),
-      location: [],
+      location: ['REDACTED'],
     }
+    user.affiliations = [],
 
     user.profile.page = {
       title: $('title').text().trim().split('-'),
@@ -49,8 +50,13 @@ const player = async (handle) => {
     const elemValues = $('div.left-col').children('div.inner').children('p.entry').children('strong.value');
 
     for(let i = 0; i < elemLabels.length; i++){
-      if(i != 0){
-        user.profile[elemLabels.eq(i).text().toLowerCase()] = elemValues.eq(i).text().replace(/\s{2,}/g,'').trim().split(', ');
+      if(elemLabels.eq(i).text().toLowerCase() == "location"){
+        user.profile[elemLabels.eq(i).text().toLowerCase()] = elemValues.eq(i).text().replace(/\s{2,}/g, '').trim().split(', ');
+      }else if(elemLabels.eq(i).text().toLowerCase() == "fluency"){
+        user.profile[elemLabels.eq(i).text().toLowerCase()] = elemValues.eq(i).text().replace(/\s{2,}/g, '').trim().split(',');
+        user.profile[elemLabels.eq(i).text().toLowerCase()].forEach((e, j) => {
+          user.profile[elemLabels.eq(i).text().toLowerCase()][j] = e.trim();
+        })
       }else{
         const d = new Date(parseInt(elemValues.eq(i).text().replace(',', '').split(' ')[2]), getMonthFromString(elemValues.eq(i).text().replace(',', '').split(' ')[0]), parseInt(elemValues.eq(i).text().replace(',', '').split(' ')[1]))
         user.profile[elemLabels.eq(i).text().toLowerCase()] = d;
@@ -61,7 +67,7 @@ const player = async (handle) => {
     //Populates Primary Organization Information
     if($('div.restriction-r')){
       user.organization = {
-        name: 'REDACTED',
+        sid: 'REDACTED',
       }
     }else if($('div.empty', 'div.inner').length){
       //Do nothing
@@ -84,17 +90,15 @@ const player = async (handle) => {
       return;
     }
 
-    const affiliations = [];
-
     for(let i = 0; i < $('div.affiliation').length; i++){
       const org = $('div.affiliation').eq(i);
 
       if(org.hasClass('visibility-R')){
-        affiliations.push({ name: 'REDACTED' })
+        user.affiliations.push({ sid: 'REDACTED' })
       }
 
       if(org.hasClass('visibility-V')){
-        affiliations.push({ 
+        user.affiliations.push({ 
           image: imgRoot+$('div.affiliation').eq(i).children('div.inner-bg').children('div.left-col').children('div.inner').children('div.thumb').children('a').children('img').attr('src'),
           name: $('div.affiliation').eq(i).children('div.inner-bg').children('div.left-col').children('div.inner').children('div.info').children('p.entry').children('a').text(),
           sid: $('div.affiliation').eq(i).children('div.inner-bg').children('div.left-col').children('div.inner').children('div.info').children('p.entry').eq(1).children('strong.value').text(),
@@ -103,8 +107,6 @@ const player = async (handle) => {
           })
       }
     }
-
-    user.affiliations = affiliations;
   })
 
   return user;

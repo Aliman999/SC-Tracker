@@ -128,7 +128,7 @@ const queue = {
 }
 
 queue.search.pool.on('failed', async (error, jobInfo) => {
-  console.warn(`Job ${error}`);
+  console.warn(`API Job ${error}`);
 
   if (jobInfo.retryCount <= 3) {
     return 10000;
@@ -136,7 +136,7 @@ queue.search.pool.on('failed', async (error, jobInfo) => {
 })
 
 queue.search.organization.pool.on('failed', async (error, jobInfo) => {
-  console.warn(`Job ${error}`);
+  console.warn(`API Job ${error}`);
 
   if (jobInfo.retryCount <= 3) {
     return 10000;

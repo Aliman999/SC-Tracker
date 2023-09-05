@@ -1,6 +1,17 @@
 const config = require("../config/index.js");
 const neo4j = require('neo4j-driver');
 
+const Bottleneck = require("bottleneck");
+
+const options = {  
+  maxConcurrent: 1,
+  minTime: 500
+}
+
+const queue = {
+  pool: new Bottleneck(options),
+}
+
 const neo = {
   session: neo4j.driver( 
     config.neo.host , 
@@ -11,27 +22,39 @@ const neo = {
       defaultAccessMode: neo4j.session.WRITE 
     } ),
 
-  query: (query, fields) => {
+  query: (query, fields = {}) => {
     return new Promise(async callback => {
-      const queryResult = await neo.session.run(query, fields).catch(e => {
-        console.log(`[NEO ERROR]: `, e);
-        callback();
+      queue.pool.schedule(neo.run, query, fields).then(data => {
+        callback(data);
       })
+    })
+  },
 
-      const singelRecord = queryResult.records[0];
-      const node = singelRecord.get(0);
+  merge: (query, fields = {}) => {
+    return new Promise(async callback => {
+      queue.pool.schedule(neo.run, query, fields).then(data => {
+        callback(data);
+      })
+    })
+  },
 
-      callback(node);
+  run: (query, fields) => {
+    return new Promise(async (callback, reject) => {
+      await neo.session.run(query, fields)
+      .then((queryResult) => {
+        const records = queryResult.records;
+        callback(records);
+      })
+      .catch(e => {
+        console.log(`[NEO ERROR]: `, e);
+        reject();
+      })
     })
   },
 
   clean: async () => {
-    const query = `MATCH (n) DETACH DELETE n`;
-    const deleteResult = await neo.session.run(query).catch(e => {
-      console.log(e);
-    })
-
-    return deleteResult;
+    let query = `MATCH (p) DETACH DELETE p;`;
+    await neo.query(query);
   }
 }
 
