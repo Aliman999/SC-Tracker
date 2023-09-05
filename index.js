@@ -35,7 +35,7 @@ async function reset() {
     console.log(e);
   })
 
-  api.player("x-TheVoyager-x").then(data => {
+  api.player("speedygang8886").then(data => {
     warehouse.player(data);
   }).catch(e => {
     console.log(e);
