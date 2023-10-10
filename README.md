@@ -1,4 +1,4 @@
-# Sting_Array---SC-Tracker
+# SC-Tracker
 
 Using data warehousing techniques to manage and maintain large datasets and create meaningful data visualization.
 <br>Developed in NodeJS
